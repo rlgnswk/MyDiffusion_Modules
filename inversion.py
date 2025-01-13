@@ -31,7 +31,7 @@ parser.add_argument("--isCfgInv", action="store_true", default=False, help="If s
 parser.add_argument("--isCfgfor", action="store_true", default=False, help="If set, use forward pass with CFG (default: False)")
 args = parser.parse_args()
 
-# python inversion.py --image_path "/shared/s2/lab01/gihoon/prompt-to-prompt/example_images/gnochi_mirror.jpeg" --prompt "a cat sitting next to a mirror" --out_dir "output_example_cat"
+# python inversion.py --image_path "/prompt-to-prompt/example_images/gnochi_mirror.jpeg" --prompt "a cat sitting next to a mirror" --out_dir "output_example_cat"
 
 if __name__ == "__main__":
     #폴더 생성 
@@ -110,8 +110,8 @@ if __name__ == "__main__":
     #naive_image = run_and_display(pipe, prompts, controller, run_baseline=False, latent=ddim_latents[-1], verbose=False, isCfgfor=args.isCfgfor)
     
     print("showing from left to right: the ground truth image, the vq-autoencoder reconstruction, the null-text inverted image")
-    results = [image_gt, image_enc, naive_image, image_inv[0]]
-    
+    #results = [image_gt, image_enc, naive_image, image_inv[0]]
+    results = [image_gt, image_enc, naive_image, image_inv]
     import os 
     os.makedirs(f"./{out_dir}", exist_ok=True)
     save_concatenated_image(results, f"./{out_dir}/combined_results.png", orientation="horizontal")
