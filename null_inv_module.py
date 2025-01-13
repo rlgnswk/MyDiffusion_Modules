@@ -440,7 +440,7 @@ def naive_forward_from_latent(latent, model, prompt, num_inference_steps=50, isC
         if null_trained_embeddings is None:
             encoder_hidden_states = torch.cat([null_embeddings, text_embeddings], dim=0)  # 무조건부 + 조건부
         else:
-            encoder_hidden_states = torch.cat([null_trained_embeddings[t], text_embeddings], dim=0)
+            encoder_hidden_states = torch.cat([null_trained_embeddings[t].expand(*text_embeddings.shape), text_embeddings], dim=0)
             
         noise_pred = model.unet(latent_input, t, encoder_hidden_states=encoder_hidden_states)["sample"]
         
