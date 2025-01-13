@@ -434,13 +434,13 @@ def naive_forward_from_latent(latent, model, prompt, num_inference_steps=50, isC
         latent = torch.nn.functional.interpolate(latent, size=(64, 64), mode='nearest')
 
     # DDIM 스케줄링
-    for t in tqdm(model.scheduler.timesteps):
+    for i, t in enumerate(tqdm(model.scheduler.timesteps)):
         # 조건부와 무조건부를 함께 전달
         latent_input = torch.cat([latent] * 2)
         if null_trained_embeddings is None:
             encoder_hidden_states = torch.cat([null_embeddings, text_embeddings], dim=0)  # 무조건부 + 조건부
         else:
-            encoder_hidden_states = torch.cat([null_trained_embeddings[t].expand(*text_embeddings.shape), text_embeddings], dim=0)
+            encoder_hidden_states = torch.cat([null_trained_embeddings[i].expand(*text_embeddings.shape), text_embeddings], dim=0)
             
         noise_pred = model.unet(latent_input, t, encoder_hidden_states=encoder_hidden_states)["sample"]
         
